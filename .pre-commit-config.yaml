@@ -1,11 +1,6 @@
-
-
-
-
-
-
+---
 repos:
-# A collection of general-purpose pre-commit hooks.
+  # A collection of general-purpose pre-commit hooks.
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -22,7 +17,7 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=200"]
 
-# Scan for secrets using gitleaks
+  # Scan for secrets using gitleaks
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.18.4
     hooks:
@@ -30,22 +25,44 @@ repos:
         args: [protect, --verbose, --redact, --staged]
         stages: [pre-commit]
 
-# Fix common misspellings in text files. It's designed primarily for checking misspelled words in source code
+  # Fix common misspellings in text files. It's designed primarily for checking
+  # misspelled words in source code
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.1
     hooks:
       - id: codespell
 
-# Ruff: An extremely fast Python linter, formatter, and more.
+  # Lint YAML files for syntax validity and best practices (key repetition and
+  # cosmetic problems such as lines length, trailing spaces, indentation, etc)
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args: [--format, parsable, --strict]
+
+  # Actionlint: A linter for GitHub Actions workflow files.
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.9
+    hooks:
+      - id: actionlint
+
+  # Shellcheck: A shell script static analysis tool.
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+
+
+  # Ruff: An extremely fast Python linter, formatter, and more.
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.14.9
     hooks:
       # Run the linter.
       - id: ruff-check
-        types_or: [ python, pyi ]
-        args: [ --fix --config=pyproject.toml]
+        types_or: [python, pyi]
+        args: [--fix, --config=pyproject.toml]
       # Run the formatter.
       - id: ruff-format
-        types_or: [ python, pyi ]
+        types_or: [python, pyi]
         args: [--config=pyproject.toml]
