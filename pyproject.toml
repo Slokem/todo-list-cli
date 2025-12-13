@@ -1,5 +1,6 @@
+
 [project]
-name = "todo-list"
+name = "todo"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -11,6 +12,9 @@ dependencies = [
     "typer"
 ]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
@@ -59,10 +63,10 @@ disallow_incomplete_defs = true
 check_untyped_defs = true
 disallow_untyped_decorators = true
 
-[[tool.mypy.overrides]]
+# [[tool.mypy.overrides]]
 # Ignore external packages that are not typed.
-module = [
-    "tensorrt.*",
-    "requests.*",
-]
-ignore_missing_imports = true
+# module = [
+#     "tensorrt.*",
+#     "requests.*",
+# ]
+# ignore_missing_imports = true
