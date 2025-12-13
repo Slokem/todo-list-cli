@@ -42,7 +42,10 @@ uv run pre-commit install --config pre-commit-config.yaml
 
 In case you had to pull or rebase your work it is important that your local setup is aligned with the project setup.
 
-The below command will clean any existing `pre-commit` configuration, recreate the python virtual environment `.venv` and re-configure `pre-commit` in one go.
+The below command will in one go:
+- Clean any existing `pre-commit` configuration
+- Delete and recreate the python virtual environment `.venv`
+- Re-configure `pre-commit` hooks
 
 ```bash
 make env-reboot
