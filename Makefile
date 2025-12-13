@@ -12,22 +12,26 @@ pre-commit-clean-hooks: ## Uninstall hooks and clean pre-commit cache.
 .PHONY: install-and-run
 pre-commit-install-run-hooks: ## Install hooks and run on all files.
 	uv run pre-commit install --config .pre-commit-config.yaml
+
+.PHONY: pre-commit-run-hooks
+pre-commit-run-hooks: ## Run hooks on all files
 	uv run pre-commit run --all-files
 
 .PHONY: install
-install: ## Install dev environment.
+env-install: ## Install dev environment.
 	uv sync --locked --dev
-	@$(MAKE) pre-commit-install-run-hooks
+	@$(MAKE) pre-commit-install-hooks
+	@$(MAKE) pre-commit-run-hooks
 
 .PHONY: uninstall
-uninstall: ## Uninstall dev environment.
+env-uninstall: ## Uninstall dev environment.
 	@$(MAKE) pre-commit-clean-hooks
 	rm -rf .venv
 
 .PHONY: env-reboot
 env-reboot: ## Start a fresh environment setup.
-	@$(MAKE) uninstall
-	@$(MAKE) install
+	@$(MAKE) env-uninstall
+	@$(MAKE) env-install
 
 .PHONY: run-mypy
 run-mypy: ## Run mypy on src/ and tests/ .
