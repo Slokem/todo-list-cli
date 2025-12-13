@@ -2,7 +2,7 @@
 
 .PHONY: help
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: pre-commit-clean-hooks
 pre-commit-clean-hooks: ## Uninstall hooks and clean pre-commit cache.
@@ -28,3 +28,7 @@ uninstall: ## Uninstall dev environment.
 env-reboot: ## Start a fresh environment setup.
 	@$(MAKE) uninstall
 	@$(MAKE) install
+
+.PHONY: run-mypy
+run-mypy: ## Run mypy on src/ and tests/ .
+	uv run mypy --config-file=pyproject.toml src/ tests/
