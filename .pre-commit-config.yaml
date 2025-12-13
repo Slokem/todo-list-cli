@@ -58,6 +58,15 @@ repos:
     hooks:
       - id: shellcheck
 
+  # Mypy: An optional static type checker for Python.
+  - repo: local
+    hooks:
+      - id: uv-run-mypy
+        name: uv-run-mypy
+        language: system
+        files: "^(src|tests)/"
+        entry: bash -c 'uv run mypy --config-file=pyproject.toml src/'
+        pass_filenames: false
 
   # Ruff: An extremely fast Python linter, formatter, and more.
   - repo: https://github.com/astral-sh/ruff-pre-commit
