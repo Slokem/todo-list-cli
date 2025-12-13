@@ -37,3 +37,13 @@ This project already included in the dev dependencies `pre-commit` (see [officia
 ```bash
 uv run pre-commit install --config pre-commit-config.yaml
 ```
+
+#### Rebooting the environment
+
+In case you had to pull or rebase your work it is important that your local setup is aligned with the project setup.
+
+The below command will clean any existing `pre-commit` configuration, recreate the python virtual environment `.venv` and re-configure `pre-commit` in one go.
+
+```bash
+make env-reboot
+```
