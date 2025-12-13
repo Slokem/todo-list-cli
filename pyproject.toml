@@ -11,16 +11,17 @@ dependencies = [
     "typer"
 ]
 
-
-
-
-
 # *****************************************************************************
 #                                   RUFF
 # *****************************************************************************
 [tool.ruff]
 line-length = 120
 target-version = "py310"
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 60
+line-ending = "lf" # Use `\n` line endings for all files
 
 [tool.ruff.lint.per-file-ignores]
 # N/A
