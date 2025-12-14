@@ -20,7 +20,7 @@ runner = CliRunner()
         (["add", "Buy groceries", "--priority", "high"], 2),  # Invalid Priority (type)
     ],
 )
-def test_todo_add(args, expected_exit_code):
+def test_todo_add(args: list[str], expected_exit_code: int) -> None:
     """
     Test exit code of the 'add' command of the todo CLI application on various inputs.
     """
@@ -38,7 +38,7 @@ def test_todo_add(args, expected_exit_code):
         (["del", "abc"], 2),
     ],
 )
-def test_todo_del(args, expected_exit_code):
+def test_todo_del(args: list[str], expected_exit_code: int) -> None:
     """
     Test exit code of the 'del' command of the todo CLI application on various inputs.
     """
@@ -73,7 +73,7 @@ def test_todo_del(args, expected_exit_code):
         (["update", "1", "--status", "1", "--priority", "0", "--task", "Updated task"], 0),
     ],
 )
-def test_todo_update(args, expected_exit_code):
+def test_todo_update(args: list[str], expected_exit_code: int) -> None:
     """
     Test exit code of the 'update' command of the todo CLI application on various inputs.
     """
@@ -89,7 +89,7 @@ def test_todo_update(args, expected_exit_code):
         (["show"], 0),
     ],
 )
-def test_todo_show(args, expected_exit_code):
+def test_todo_show(args: list[str], expected_exit_code: int) -> None:
     """
     Test exit code of the 'show' command of the todo CLI application on various inputs.
     """

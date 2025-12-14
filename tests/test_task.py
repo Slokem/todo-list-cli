@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 from rich.style import Style
 
@@ -17,13 +19,16 @@ from todo.task import Task, TaskPriority, TaskStatus
     ],
     ids=["high", "medium", "low"],
 )
-def test_task_priority_enum_properties(priority, expected_value, expected_name, expected_color, expected_short_name):
+def test_task_priority_enum_properties(
+    priority: TaskPriority, expected_value: int, expected_name: str, expected_color: str, expected_short_name: str
+) -> None:
     """Test TaskPriority enum members and their properties."""
     assert priority == expected_value
     assert priority.name == expected_name
     assert priority.short_name == expected_short_name
     assert priority.color == expected_color
     assert isinstance(priority.style, Style)
+    assert priority.style.color is not None
     assert priority.style.color.name == expected_color
     assert priority.style.bold
     assert priority.display == f"[{expected_color}]{expected_short_name}[/{expected_color}]"
@@ -37,13 +42,16 @@ def test_task_priority_enum_properties(priority, expected_value, expected_name, 
     ],
     ids=["todo", "done"],
 )
-def test_task_status_enum_properties(status, expected_value, expected_name, expected_color, expected_emoji):
+def test_task_status_enum_properties(
+    status: TaskStatus, expected_value: int, expected_name: str, expected_color: str, expected_emoji: str
+) -> None:
     """Test TaskStatus enum members and their properties."""
     assert status == expected_value
     assert status.name == expected_name
     assert status.color == expected_color
     assert status.emoji == expected_emoji
     assert isinstance(status.style, Style)
+    assert status.style.color is not None
     assert status.style.color.name == expected_color
     assert status.style.bold
     assert status.display == f"{expected_emoji} [{expected_color}]{expected_name}[/{expected_color}]"
@@ -59,7 +67,7 @@ def test_task_status_enum_properties(status, expected_value, expected_name, expe
     ],
     ids=["valid-0", "valid-1", "valid-2", "none"],
 )
-def test_task_priority_validation_callback_valid(value, expected_result):
+def test_task_priority_validation_callback_valid(value: int | None, expected_result: int | None) -> None:
     """Test TaskPriority validation callback with valid values."""
     assert TaskPriority.validation_callback(value) == expected_result
 
@@ -69,7 +77,7 @@ def test_task_priority_validation_callback_valid(value, expected_result):
     [3, -1, "high", ""],
     ids=["out-of-range-high", "out-of-range-low", "string", "empty-string"],
 )
-def test_task_priority_validation_callback_invalid(invalid_value):
+def test_task_priority_validation_callback_invalid(invalid_value: Any) -> None:
     """Test TaskPriority validation callback with invalid values."""
     with pytest.raises(Exception):
         TaskPriority.validation_callback(invalid_value)
@@ -89,7 +97,7 @@ def test_task_priority_validation_callback_invalid(invalid_value):
     ],
     ids=["valid-0", "valid-1", "none"],
 )
-def test_task_status_validation_callback_valid(value, expected_result):
+def test_task_status_validation_callback_valid(value: int | None, expected_result: int | None) -> None:
     """Test TaskStatus validation callback with valid values."""
     assert TaskStatus.validation_callback(value) == expected_result
 
@@ -99,7 +107,7 @@ def test_task_status_validation_callback_valid(value, expected_result):
     [2, -1, "todo", ""],
     ids=["out-of-range-high", "out-of-range-low", "string", "empty-string"],
 )
-def test_task_status_validation_callback_invalid(invalid_value):
+def test_task_status_validation_callback_invalid(invalid_value: Any) -> None:
     """Test TaskStatus validation callback with invalid values."""
     with pytest.raises(Exception):
         TaskStatus.validation_callback(invalid_value)
@@ -110,7 +118,7 @@ def test_task_status_validation_callback_invalid(invalid_value):
 ##################################
 
 
-def test_task_model_creation():
+def test_task_model_creation() -> None:
     """Test Task model can be instantiated with required fields."""
     task = Task(description="Buy groceries", priority=0, status=0)
 
@@ -124,7 +132,7 @@ def test_task_model_creation():
     assert task.completed_at is None
 
 
-def test_task_model_with_all_fields():
+def test_task_model_with_all_fields() -> None:
     """Test Task model with all fields populated."""
     task = Task(
         id=1,
@@ -147,7 +155,7 @@ def test_task_model_with_all_fields():
     assert task.completed_at is None
 
 
-def test_task_model_default_status():
+def test_task_model_default_status() -> None:
     """Test Task has default status of 0 (TODO)."""
     task = Task(description="Test task", priority=1)
     assert task.status == 0
@@ -162,7 +170,7 @@ def test_task_model_default_status():
     ],
     ids=["high", "medium", "low"],
 )
-def test_task_model_priority_values(priority, expected):
+def test_task_model_priority_values(priority: int, expected: TaskPriority) -> None:
     """Test Task can be created with different priority values."""
     task = Task(description="Test", priority=priority)
     assert task.priority == priority
@@ -177,7 +185,7 @@ def test_task_model_priority_values(priority, expected):
     ],
     ids=["todo", "done"],
 )
-def test_task_model_status_values(status, expected):
+def test_task_model_status_values(status: int, expected: TaskStatus) -> None:
     """Test Task can be created with different status values."""
     task = Task(description="Test", priority=1, status=status)
     assert task.status == status

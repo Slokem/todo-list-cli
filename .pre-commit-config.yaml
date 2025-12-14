@@ -65,7 +65,7 @@ repos:
         name: uv-run-mypy
         language: system
         files: "^(src|tests)/"
-        entry: bash -c 'uv run mypy --config-file=pyproject.toml src/'
+        entry: bash -c 'uv run mypy --config-file=pyproject.toml src/ tests/'
         pass_filenames: false
 
   # Pytest: run all tests using pytest.

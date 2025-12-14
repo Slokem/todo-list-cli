@@ -15,7 +15,7 @@ runner = CliRunner()
         (["greet", "Bob", "Smith", "--formal"], 0, "Good day dear Bob Smith!"),
     ],
 )
-def test_app_cmd_greet(args, expected_exit_code, expected_output):
+def test_app_cmd_greet(args: list[str], expected_exit_code: int, expected_output: str) -> None:
     result = runner.invoke(app, args)
     assert result.exit_code == expected_exit_code
     assert expected_output in result.output
@@ -31,7 +31,7 @@ def test_app_cmd_greet(args, expected_exit_code, expected_output):
         (["farewell", "Bob", "Smith", "--formal"], 2, "Got unexpected extra argument"),
     ],
 )
-def test_app_cmd_farewell(args, expected_exit_code, expected_output):
+def test_app_cmd_farewell(args: list[str], expected_exit_code: int, expected_output: str) -> None:
     result = runner.invoke(app, args)
     assert result.exit_code == expected_exit_code
     assert expected_output in result.output
