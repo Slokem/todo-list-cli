@@ -1,47 +1,51 @@
+from enum import IntEnum
+
 from rich.style import Style
 
 
-class TaskPriority:
-    priority_mapping = {
-        0: {
-            "name": "High",
-            "color": "red",
-        },
-        1: {
-            "name": "Medium",
-            "color": "yellow",
-        },
-        2: {
-            "name": "Low",
-            "color": "magenta",
-        },
-    }
+class TaskPriority(IntEnum):
+    HIGH = 0
+    MEDIUM = 1
+    LOW = 2
 
-    def __init__(self, num: int) -> None:
-        self.num: str = str(num)
-        self.name: str = TaskPriority.priority_mapping[num]["name"]
-        self.short_name: str = f"P{num}"
-        self.color: str = TaskPriority.priority_mapping[num]["color"]
-        self.display: str = f"[{self.color}]{self.short_name}[/{self.color}]"
-        self.style: Style = Style(color=self.color, bold=True)
+    @property
+    def short_name(self) -> str:
+        return f"P{str(self.value)}"
+
+    @property
+    def color(self) -> str:
+        priority_colors = {
+            TaskPriority.HIGH: "red",
+            TaskPriority.MEDIUM: "yellow",
+            TaskPriority.LOW: "magenta",
+        }
+        return priority_colors[self]
+
+    @property
+    def style(self) -> Style:
+        return Style(color=self.color, bold=True)
+
+    @property
+    def display(self) -> str:
+        return f"[{self.color}]{self.short_name}[/{self.color}]"
 
 
-class TaskStatus:
-    status_mapping = {
-        0: {
-            "name": "TODO",
-            "color": "red",
-            "emoji": ":hourglass:",
-        },
-        1: {
-            "name": "DONE",
-            "color": "green",
-            "emoji": ":white_check_mark:",
-        },
-    }
+class TaskStatus(IntEnum):
+    TODO = 0
+    DONE = 1
 
-    def __init__(self, num: int = 0) -> None:
-        self.name: str = TaskStatus.status_mapping[num]["name"]
-        self.style: Style = Style(color=TaskStatus.status_mapping[num]["color"], bold=True)
-        self.emoji: str = TaskStatus.status_mapping[num]["emoji"]
-        self.display: str = f"{self.emoji} [{self.style}]{self.name}[/{self.style}]"
+    @property
+    def color(self) -> str:
+        return "red" if self == TaskStatus.TODO else "green"
+
+    @property
+    def emoji(self) -> str:
+        return ":hourglass:" if self == TaskStatus.TODO else ":white_check_mark:"
+
+    @property
+    def style(self) -> Style:
+        return Style(color=self.color, bold=True)
+
+    @property
+    def display(self) -> str:
+        return f"{self.emoji} [{self.color}]{self.name}[/{self.color}]"
