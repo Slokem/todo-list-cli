@@ -43,3 +43,54 @@ def test_task_status_enum_properties(status, expected_value, expected_name, expe
     assert status.style.color.name == expected_color
     assert status.style.bold
     assert status.display == f"{expected_emoji} [{expected_color}]{expected_name}[/{expected_color}]"
+
+
+@pytest.mark.parametrize(
+    "value, expected_result",
+    [
+        (0, 0),
+        (1, 1),
+        (2, 2),
+        (None, None),
+    ],
+    ids=["valid-0", "valid-1", "valid-2", "none"],
+)
+def test_task_priority_validation_callback_valid(value, expected_result):
+    """Test TaskPriority validation callback with valid values."""
+    assert TaskPriority.validation_callback(value) == expected_result
+
+
+@pytest.mark.parametrize(
+    "invalid_value",
+    [3, -1, "high", ""],
+    ids=["out-of-range-high", "out-of-range-low", "string", "empty-string"],
+)
+def test_task_priority_validation_callback_invalid(invalid_value):
+    """Test TaskPriority validation callback with invalid values."""
+    with pytest.raises(Exception):
+        TaskPriority.validation_callback(invalid_value)
+
+
+@pytest.mark.parametrize(
+    "value, expected_result",
+    [
+        (0, 0),
+        (1, 1),
+        (None, None),
+    ],
+    ids=["valid-0", "valid-1", "none"],
+)
+def test_task_status_validation_callback_valid(value, expected_result):
+    """Test TaskStatus validation callback with valid values."""
+    assert TaskStatus.validation_callback(value) == expected_result
+
+
+@pytest.mark.parametrize(
+    "invalid_value",
+    [2, -1, "todo", ""],
+    ids=["out-of-range-high", "out-of-range-low", "string", "empty-string"],
+)
+def test_task_status_validation_callback_invalid(invalid_value):
+    """Test TaskStatus validation callback with invalid values."""
+    with pytest.raises(Exception):
+        TaskStatus.validation_callback(invalid_value)
