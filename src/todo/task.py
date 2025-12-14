@@ -3,9 +3,14 @@ from typing import Optional
 
 import typer
 from rich.style import Style
+from sqlmodel import Field, SQLModel
 
 
 class TaskPriority(IntEnum):
+    """
+    Enum representing task priority levels.
+    """
+
     HIGH = 0
     MEDIUM = 1
     LOW = 2
@@ -42,6 +47,10 @@ class TaskPriority(IntEnum):
 
 
 class TaskStatus(IntEnum):
+    """
+    Enum representing task status.
+    """
+
     TODO = 0
     DONE = 1
 
@@ -69,3 +78,16 @@ class TaskStatus(IntEnum):
     @property
     def display(self) -> str:
         return f"{self.emoji} [{self.color}]{self.name}[/{self.color}]"
+
+
+class Task(SQLModel, table=True):
+    """SQLModel representing a task in the database."""
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    position: Optional[int] = Field(default=None, index=True)  # For ordering tasks in the todo list
+    description: str
+    priority: int  # 0: High, 1: Medium, 2: Low
+    status: int = Field(default=0)  # 0: TODO, 1: DONE
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    completed_at: Optional[str] = None

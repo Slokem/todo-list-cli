@@ -1,7 +1,11 @@
 import pytest
 from rich.style import Style
 
-from todo.task import TaskPriority, TaskStatus
+from todo.task import Task, TaskPriority, TaskStatus
+
+##########################
+# Tests for TaskPriority
+##########################
 
 
 @pytest.mark.parametrize(
@@ -71,6 +75,11 @@ def test_task_priority_validation_callback_invalid(invalid_value):
         TaskPriority.validation_callback(invalid_value)
 
 
+##########################
+# Tests for TaskStatus
+##########################
+
+
 @pytest.mark.parametrize(
     "value, expected_result",
     [
@@ -94,3 +103,82 @@ def test_task_status_validation_callback_invalid(invalid_value):
     """Test TaskStatus validation callback with invalid values."""
     with pytest.raises(Exception):
         TaskStatus.validation_callback(invalid_value)
+
+
+##################################
+# Tests for Task model (SQL Model)
+##################################
+
+
+def test_task_model_creation():
+    """Test Task model can be instantiated with required fields."""
+    task = Task(description="Buy groceries", priority=0, status=0)
+
+    assert task.description == "Buy groceries"
+    assert task.priority == 0
+    assert task.status == 0
+    assert task.id is None  # Not set until saved to DB
+    assert task.position is None
+    assert task.created_at is None
+    assert task.updated_at is None
+    assert task.completed_at is None
+
+
+def test_task_model_with_all_fields():
+    """Test Task model with all fields populated."""
+    task = Task(
+        id=1,
+        position=1,
+        description="Complete project",
+        priority=TaskPriority.HIGH,
+        status=TaskStatus.TODO,
+        created_at="2024-01-01T10:00:00",
+        updated_at="2024-01-01T11:00:00",
+        completed_at=None,
+    )
+
+    assert task.id == 1
+    assert task.position == 1
+    assert task.description == "Complete project"
+    assert task.priority == 0  # TaskPriority.HIGH is 0
+    assert task.status == 0  # TaskStatus.TODO is 0
+    assert task.created_at == "2024-01-01T10:00:00"
+    assert task.updated_at == "2024-01-01T11:00:00"
+    assert task.completed_at is None
+
+
+def test_task_model_default_status():
+    """Test Task has default status of 0 (TODO)."""
+    task = Task(description="Test task", priority=1)
+    assert task.status == 0
+
+
+@pytest.mark.parametrize(
+    "priority, expected",
+    [
+        (0, TaskPriority.HIGH),
+        (1, TaskPriority.MEDIUM),
+        (2, TaskPriority.LOW),
+    ],
+    ids=["high", "medium", "low"],
+)
+def test_task_model_priority_values(priority, expected):
+    """Test Task can be created with different priority values."""
+    task = Task(description="Test", priority=priority)
+    assert task.priority == priority
+    assert TaskPriority(task.priority) == expected
+
+
+@pytest.mark.parametrize(
+    "status, expected",
+    [
+        (0, TaskStatus.TODO),
+        (1, TaskStatus.DONE),
+    ],
+    ids=["todo", "done"],
+)
+def test_task_model_status_values(status, expected):
+    """Test Task can be created with different status values."""
+    task = Task(description="Test", priority=1, status=status)
+    assert task.status == status
+    assert TaskStatus(task.status) == expected
