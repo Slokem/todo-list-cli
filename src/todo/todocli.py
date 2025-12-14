@@ -19,13 +19,17 @@ def main() -> None:
     pass
 
 
-def priority_callback(value: int) -> int:
+def priority_callback(value: Optional[int]) -> Optional[int]:
+    if value is None:
+        return None
     if value not in [0, 1, 2]:
         raise typer.BadParameter("Only integers 0, 1, 2 are allowed.")
     return value
 
 
-def status_callback(value: int) -> int:
+def status_callback(value: Optional[int]) -> Optional[int]:
+    if value is None:
+        return None
     allowed_status = [0, 1]
     if value not in allowed_status:
         raise typer.BadParameter(f"Only status values {', '.join(map(str, allowed_status))} are allowed.")
@@ -44,7 +48,7 @@ class TaskPriority:
         },
         2: {
             "name": "Low",
-            "color": "",
+            "color": "magenta",
         },
     }
 
@@ -120,6 +124,7 @@ def update_task(
             "--status",
             "-s",
             help="[ 0 | 1 ] New status of the task corresponding to 0=TODO, 1=DONE",
+            callback=status_callback,
         ),
     ] = None,
     task: Annotated[Optional[str], typer.Option("--task", "-t", help="New description for the task")] = None,
@@ -129,6 +134,7 @@ def update_task(
             "--priority",
             "-p",
             help="[ 0 | 1 | 2 ] New priority of the task corresponding to P0=High, P1=Medium, P2=Low",
+            callback=priority_callback,
         ),
     ] = None,
 ) -> None:
