@@ -36,3 +36,7 @@ env-reboot: ## Start a fresh environment setup.
 .PHONY: run-mypy
 run-mypy: ## Run mypy on src/ and tests/ .
 	uv run mypy --config-file=pyproject.toml src/ tests/
+
+.PHONY: run-pytest
+run-pytest: ## Run pytest on the entire project
+	uv run pytest -vv
