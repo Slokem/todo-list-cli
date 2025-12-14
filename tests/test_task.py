@@ -17,8 +17,11 @@ def test_task_priority_enum_properties(priority, expected_value, expected_name, 
     """Test TaskPriority enum members and their properties."""
     assert priority == expected_value
     assert priority.name == expected_name
-    assert priority.color == expected_color
     assert priority.short_name == expected_short_name
+    assert priority.color == expected_color
+    assert isinstance(priority.style, Style)
+    assert priority.style.color.name == expected_color
+    assert priority.style.bold
     assert priority.display == f"[{expected_color}]{expected_short_name}[/{expected_color}]"
 
 
@@ -37,4 +40,6 @@ def test_task_status_enum_properties(status, expected_value, expected_name, expe
     assert status.color == expected_color
     assert status.emoji == expected_emoji
     assert isinstance(status.style, Style)
+    assert status.style.color.name == expected_color
+    assert status.style.bold
     assert status.display == f"{expected_emoji} [{expected_color}]{expected_name}[/{expected_color}]"
