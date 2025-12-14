@@ -6,10 +6,27 @@
 
 ### Pre-requisites
 
+#### uv
+
 This project is using `uv`. Please start by installing it by following
 [official documentation](https://docs.astral.sh/uv/getting-started/installation/)
 
 Compatible `uv` version: **0.8.0 or higher**
+
+#### sqlite3 (optional but recommended)
+
+Optionally, if you want to explore from the terminal the database built by this
+project the installation of sqlite3 is recommended.
+If you are on Debian/Ubuntu you can run:
+
+```bash
+sudo apt-get update
+sudo apt-get install sqlite3
+```
+
+Otherwise please follow the [official documentation](https://sqlite.org/).
+
+Compatible with `sqlite3` version: **3.45.0 or higher**
 
 ### Environment Setup
 
