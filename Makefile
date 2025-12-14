@@ -44,3 +44,7 @@ run-pytest: ## Run pytest on the entire project
 .PHONY: db-select-all-tasks
 db-select-all-tasks: ## Select all Tasks in the CLI Sqlite database. [sqlite3 required]
 	sqlite3 -header -column ~/.todocli/todo.db "SELECT * FROM task;"
+
+.PHONY: stash
+stash: ## Advanced stash to include unstagged and untracked files (useful while developing)
+	git stash push --keep-index --include-untracked
