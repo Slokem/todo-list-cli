@@ -9,8 +9,12 @@ authors = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "typer"
+    "typer",
+    "sqlmodel"
 ]
+
+[project.scripts]
+todo = "todo.todocli:app"
 
 [build-system]
 requires = ["hatchling"]
