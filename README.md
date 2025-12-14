@@ -1,4 +1,4 @@
-# ✔️todo-list-cli
+# ✔️todo-cli
 
 > CLI tool to maintain a personal todo list directly from the terminal
 
@@ -21,9 +21,9 @@ reproducibility of the python version and the python dependencies.
 
 In one command `uv` will:
 
-- install the right python version is it is not already done
-- create a virtual environment `.venv` if it does not exists in this folder
-- install/update dependencies in the `.venv` environment
+- Install the right python version is it is not already done.
+- Create a virtual environment `.venv` if it does not exists in this folder.
+- Install/update dependencies in the `.venv` environment.
 
 ```bash
 # Please run the command at the root of the repository
@@ -35,7 +35,7 @@ to update dependencies while developing.
 ℹ️ `--dev` ensures that additional dependencies are installed in you virtual
 environment for development (e,g, `pre-commit`, `mypy`, `pytest`, ...)
 
-#### Pre-commit Setup
+#### Pre-commit setup
 
 This project already included in the dev dependencies `pre-commit` (see
 [official documentation](https://pre-commit.com/)). Three is thus no need to
@@ -60,3 +60,36 @@ The below command will in one go:
 ```bash
 make env-reboot
 ```
+
+## Development How To Guides
+
+### Using Editable mode
+
+When you develop you will need to edit and run the code in editable mode so
+that import can be resolved. Please run:
+
+```bash
+uv pip install -e .
+```
+
+### Testing Suites
+
+This project is using `pytest` to configure and run test. Please take a look at
+the [official documentation](https://docs.pytest.org/en/stable/).
+
+Since the tests suite is fast, `pre-commit` hook has been configured to
+run them. However you can also manually run them by suing the below command:
+
+```bash
+make run-pytest
+```
+
+## Updating Project Dependencies
+
+If you need to update dependencies on the project please follow the below
+instructions:
+
+- Update the dependencies requirements and the version of the project in the `pyproject.toml`.
+- Run the command `uv sync`. This will generate an updated version of `uv.lock`.
+- Run and pass all tests.
+- Open a PR.
