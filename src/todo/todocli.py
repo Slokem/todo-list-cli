@@ -25,10 +25,10 @@ def priority_callback(value: int) -> int:
     return value
 
 
-def status_callback(value: str) -> str:
-    allowed_status = ["TODO", "DONE"]
+def status_callback(value: int) -> int:
+    allowed_status = [0, 1]
     if value not in allowed_status:
-        raise typer.BadParameter(f"Only status values {', '.join(allowed_status)} are allowed.")
+        raise typer.BadParameter(f"Only status values {', '.join(map(str, allowed_status))} are allowed.")
     return value
 
 
@@ -59,14 +59,22 @@ class TaskPriority:
 
 class TaskStatus:
     status_mapping = {
-        "TODO": {"color": "red", "emoji": ":hourglass:"},
-        "DONE": {"color": "green", "emoji": ":white_check_mark:"},
+        0: {
+            "name": "TODO",
+            "color": "red",
+            "emoji": ":hourglass:",
+        },
+        1: {
+            "name": "DONE",
+            "color": "green",
+            "emoji": ":white_check_mark:",
+        },
     }
 
-    def __init__(self, name: str = "TODO") -> None:
-        self.name: str = name
-        self.style: Style = Style(color=TaskStatus.status_mapping[name]["color"], bold=True)
-        self.emoji: str = TaskStatus.status_mapping[name]["emoji"]
+    def __init__(self, num: int = 0) -> None:
+        self.name: str = TaskStatus.status_mapping[num]["name"]
+        self.style: Style = Style(color=TaskStatus.status_mapping[num]["color"], bold=True)
+        self.emoji: str = TaskStatus.status_mapping[num]["emoji"]
         self.display: str = f"{self.emoji} [{self.style}]{self.name}[/{self.style}]"
 
 
@@ -89,7 +97,7 @@ def add_task(
     """
     p = TaskPriority(priority)
     console.print(
-        f":heavy_plus_sign: [green]Adding[/green] task '{task}' with priority {p.short_name}={p.name} and status {TaskStatus().name}."
+        f":heavy_plus_sign: [green]Adding[/green] task '{task}' with priority {p.short_name}={p.name} and status {TaskStatus(0).name}."
     )
     pass
 
@@ -107,11 +115,11 @@ def delete_task(id: Annotated[int, typer.Argument(help="ID of the task to delete
 def update_task(
     id: Annotated[int, typer.Argument(help="ID of the task to update")],
     status: Annotated[
-        Optional[str],
+        Optional[int],
         typer.Option(
             "--status",
             "-s",
-            help="New status of the task",
+            help="[ 0 | 1 ] New status of the task corresponding to 0=TODO, 1=DONE",
         ),
     ] = None,
     task: Annotated[Optional[str], typer.Option("--task", "-t", help="New description for the task")] = None,
@@ -134,7 +142,7 @@ def update_task(
         if priority is not None
         else message
     )
-    message = message + "\n    with new status: " + f"{status}" if status else message
+    message = message + "\n    with new status: " + f"{TaskStatus(status).name}" if status else message
     console.print(f"{message}")
     pass
 
@@ -149,8 +157,8 @@ def show() -> None:
     table.add_column("Description", justify="left", no_wrap=False, max_width=40)
     table.add_column("Priority", justify="center")
     table.add_column("Status", justify="center")
-    table.add_row("1", "Finish interview notes", TaskPriority(0).display, TaskStatus("DONE").display)
-    table.add_row("2", "Answer to fudosan", TaskPriority(1).display, TaskStatus("TODO").display)
+    table.add_row("1", "Finish interview notes", TaskPriority(0).display, TaskStatus(0).display)
+    table.add_row("2", "Answer to fudosan", TaskPriority(1).display, TaskStatus(0).display)
     console.print(table)
 
 
